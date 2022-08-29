@@ -2,7 +2,7 @@
   "name": "@kazanexpress/frontend-devtools",
   "main": "./dist/KeDevtools.common.js",
   "types": "./dist/types.ts",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
