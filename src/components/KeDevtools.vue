@@ -1,15 +1,15 @@
 <template>
-  <div class="devtools">
+  <div class="ke-devtools">
     <slot name="before" />
-    <div class="devtools-panel" :class="{ active: isShowDevtools }">
-      <button class="devtools-panel-activator" @click="toggleShowDevtools">
+    <div class="ke-devtools-panel" :class="{ active: isShowDevtools }">
+      <button class="ke-devtools-panel-activator" @click="toggleShowDevtools">
         <DevtoolsLogo />
       </button>
-      <div class="devtools-panel-wrapper">
+      <div class="ke-devtools-panel-wrapper">
         <button
           v-for="item in items"
           :key="item"
-          class="devtools-panel-button"
+          class="ke-devtools-panel-button"
           @click="onClickItem(item)"
         >
           <slot :name="`item-${item}`" />
@@ -77,7 +77,7 @@ export default Vue.extend({
 </script>
 
 <style scoped>
-.devtools {
+.ke-devtools {
   position: absolute;
   width: 100%;
   z-index: 999;
@@ -86,16 +86,16 @@ export default Vue.extend({
   top: 0;
 }
 
-.devtools-panel {
+.ke-devtools-panel {
   transform: translateY(-100%);
   transition: 0.15s transform;
 }
 
-.devtools-panel.active {
+.ke-devtools-panel.active {
   transform: translateY(0);
 }
 
-.devtools-panel-wrapper {
+.ke-devtools-panel-wrapper {
   z-index: 80;
   display: flex;
   justify-content: flex-end;
@@ -103,7 +103,7 @@ export default Vue.extend({
   background-color: #2e3138;
 }
 
-.devtools-panel-button {
+.ke-devtools-panel-button {
   outline: none;
   border: none;
   background-color: transparent;
@@ -111,7 +111,7 @@ export default Vue.extend({
   padding: 0;
 }
 
-.devtools-panel-activator {
+.ke-devtools-panel-activator {
   position: absolute;
   right: 0;
   bottom: 0;
@@ -127,11 +127,11 @@ export default Vue.extend({
   transform: translate(32%, 42%);
 }
 
-.devtools-panel-activator svg {
+.ke-devtools-panel-activator svg {
   transform: translate(-4px, 26px);
 }
 
-.devtools-panel-activator:hover {
+.ke-devtools-panel-activator:hover {
   background-color: #494b50;
 }
 </style>
