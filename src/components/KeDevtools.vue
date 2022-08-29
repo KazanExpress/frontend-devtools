@@ -3,16 +3,18 @@
     <slot name="before" />
     <div class="ke-devtools-panel" :class="{ active: isShowDevtools }">
       <button class="ke-devtools-panel-activator" @click="toggleShowDevtools">
-        <DevtoolsLogo />
+        <slot name="activator">
+          <DevtoolsLogo />
+        </slot>
       </button>
       <div class="ke-devtools-panel-wrapper">
         <button
           v-for="item in items"
-          :key="item"
+          :key="item.key"
           class="ke-devtools-panel-button"
           @click="onClickItem(item)"
         >
-          <slot :name="`item-${item}`" />
+          <slot :name="`item-${item.key}`" :active="flags.includes(item.key)" />
         </button>
       </div>
     </div>
@@ -23,30 +25,8 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import DevtoolsLogo from "@/assets/devtools.svg";
-
-const LOCAL_STORAGE_KEY = "ke-devtools";
-
-const processFlag = (item: string) => {
-  let result = false;
-  const localFlags = JSON.parse(
-    localStorage.getItem(LOCAL_STORAGE_KEY) || "{}"
-  );
-
-  if (localFlags[item]) {
-    delete localFlags[item];
-  } else {
-    localFlags[item] = true;
-    result = true;
-  }
-
-  if (Object.keys(localFlags).length === 0) {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
-  } else {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(localFlags));
-  }
-
-  return result;
-};
+import { getLocalFlags, processFlag, DEFAULT_LOCAL_KEY } from "./business";
+import { TChangePayload, TDevtoolsItem } from "./types";
 
 export default Vue.extend({
   name: "ke-devtools",
@@ -55,22 +35,38 @@ export default Vue.extend({
   },
   props: {
     items: {
-      type: Array as PropType<string[]>,
+      type: Array as PropType<TDevtoolsItem[]>,
       required: true,
+    },
+    localStorageKey: {
+      type: String,
+      default: DEFAULT_LOCAL_KEY,
     },
   },
   data() {
     return {
       isShowDevtools: false,
+      flags: getLocalFlags(this.localStorageKey),
     };
   },
   methods: {
     toggleShowDevtools() {
       this.isShowDevtools = !this.isShowDevtools;
     },
-    onClickItem(key: string) {
-      const value = processFlag(key);
-      this.$emit("update", { key, value });
+    onClickItem(item: TDevtoolsItem) {
+      let value = true;
+
+      if (item.saveLocal !== false) {
+        value = processFlag(item.key, this.localStorageKey);
+        this.flags.push(item.key);
+      }
+
+      const changePayload: TChangePayload = {
+        key: item.key,
+        value,
+      };
+
+      this.$emit("change", changePayload);
     },
   },
 });
