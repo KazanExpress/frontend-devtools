@@ -108,7 +108,7 @@ export default Vue.extend({
   border: none;
   background-color: transparent;
   cursor: pointer;
-  padding: 0;
+  padding: 5px;
 }
 
 .ke-devtools-panel-activator {
