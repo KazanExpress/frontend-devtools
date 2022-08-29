@@ -97,6 +97,7 @@ export default Vue.extend({
   justify-content: flex-end;
   padding: 5px;
   background-color: #2e3138;
+  gap: 20px;
 }
 
 .ke-devtools-panel-button {
@@ -104,7 +105,11 @@ export default Vue.extend({
   border: none;
   background-color: transparent;
   cursor: pointer;
-  padding: 5px;
+  padding: 10px;
+}
+
+.ke-devtools-panel-button:hover {
+  background-color: #494b50;
 }
 
 .ke-devtools-panel-activator {
