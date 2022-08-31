@@ -9,24 +9,21 @@ npm i -D @kazanexpress/frontend-devtools@github:KazanExpress/frontend-devtools
 ```
 2. Подключить компонент и стили
 ```
-import  '@kazanexpress/frontend-devtools/dist/KeDevtools.css';
-import KeDevtools from  '@kazanexpress/frontend-devtools';
+import '@kazanexpress/frontend-devtools/dist/KeDevtools.css';
+import KeDevtools from '@kazanexpress/frontend-devtools';
 ```
 3. Использовать
 ```html
 <KeDevtools
-	:items="devtoolsItems"
-	local-storage-key="ke-devtools-example"
-	@change="onChange"
+  :items="devtoolsItems"
+  local-storage-key="ke-devtools-example"
+  @change="onChange"
 >
-	<template  #item-example-save="{ active }">
-		<span  
-			class="example"  
-			:class="{  active: active }"
-		>
-			save local
-		</span>
-	</template>
+  <template #item-example-save="{ active }">
+    <span class="example" :class="{  active: active }">
+      save local
+    </span>
+  </template>
 </KeDevtools>
 ```
 Полный пример использования в [./src/App.vue](https://github.com/KazanExpress/frontend-devtools/blob/master/src/App.vue)
@@ -35,7 +32,7 @@ import KeDevtools from  '@kazanexpress/frontend-devtools';
 | | types | required | default |
 |--|--|--|--|
 | items | [TDevtoolsItem](#types)[] | **true** | |
-| localStorageKey | string | false | ke-devtools |
+| localStorageKey | string | false | 'ke-devtools' |
 
 ### Events
 | name | payload | description |
@@ -53,14 +50,14 @@ import KeDevtools from  '@kazanexpress/frontend-devtools';
 
 ### Types
 ```ts
-export  type  TDevtoolsItem<T  =  string>  =  {
-	key:  T;
-	saveLocal?:  boolean;
+export type TDevtoolsItem<T = string> = {
+  key: T;
+  saveLocal?: boolean;
 };
 
-export  type  TChangePayload<T  =  string>  =  {
-	key:  T;
-	value:  boolean;
+export type TChangePayload<T = string> = {
+  key: T;
+  value: boolean;
 };
 ```
   
