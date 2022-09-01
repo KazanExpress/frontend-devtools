@@ -1,16 +1,19 @@
 <template>
-  <KeDevtools
-    :items="devtoolsItems"
-    local-storage-key="ke-devtools-example"
-    @change="onChange"
-  >
-    <template #item-example-save="{ active }">
-      <span class="example" :class="{ active: active }">save local</span>
-    </template>
-    <template #item-example-not-save>
-      <span class="example">not save local</span>
-    </template>
-  </KeDevtools>
+  <div class="app">
+    <KeDevtools
+      :items="devtoolsItems"
+      local-storage-key="ke-devtools-example"
+      @change="onChange"
+    >
+      <template #item-example-save="{ active }">
+        <span class="example" :class="{ active: active }">save local</span>
+      </template>
+      <template #item-example-not-save>
+        <span class="example">not save local</span>
+      </template>
+    </KeDevtools>
+    <div class="content">example content</div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -61,6 +64,12 @@ export default Vue.extend({
 </script>
 
 <style scoped>
+.content {
+  height: 100px;
+  border: 1px solid aquamarine;
+  cursor: pointer;
+}
+
 .example {
   color: white;
 }
