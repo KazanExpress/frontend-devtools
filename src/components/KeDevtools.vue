@@ -25,7 +25,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import DevtoolsLogo from "@/assets/devtools.svg";
-import { getLocalFlags, processFlag, DEFAULT_LOCAL_KEY } from "./business";
+import { processFlag, DEFAULT_LOCAL_KEY, getInitialFlags } from "./business";
 import { TChangePayload, TDevtoolsItem } from "./types";
 
 export default Vue.extend({
@@ -46,7 +46,7 @@ export default Vue.extend({
   data() {
     return {
       isShowDevtools: false,
-      flags: getLocalFlags(this.localStorageKey),
+      flags: getInitialFlags(this.items, this.localStorageKey),
     };
   },
   methods: {
@@ -58,7 +58,12 @@ export default Vue.extend({
 
       if (item.saveLocal !== false) {
         value = processFlag(item.key, this.localStorageKey);
-        this.flags.push(item.key);
+
+        if (value) {
+          this.flags.push(item.key);
+        } else {
+          this.flags.splice(this.flags.indexOf(item.key), 1);
+        }
       }
 
       const changePayload: TChangePayload = {

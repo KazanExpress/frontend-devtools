@@ -11,6 +11,11 @@
       <template #item-example-not-save>
         <span class="example">not save local</span>
       </template>
+      <template #item-default-active-true="{ active }">
+        <span class="example" :class="{ active: active }">
+          default active true
+        </span>
+      </template>
     </KeDevtools>
     <div class="content">example content</div>
   </div>
@@ -24,6 +29,7 @@ import { TChangePayload, TDevtoolsItem } from "./components/types";
 const enum EDevtoolsExample {
   SAVE = "example-save",
   NOT_SAVE = "example-not-save",
+  DEFAULT_ACTIVE_TRUE = "default-active-true",
 }
 
 const devtoolsItems: TDevtoolsItem<EDevtoolsExample>[] = [
@@ -33,6 +39,10 @@ const devtoolsItems: TDevtoolsItem<EDevtoolsExample>[] = [
   {
     key: EDevtoolsExample.NOT_SAVE,
     saveLocal: false,
+  },
+  {
+    key: EDevtoolsExample.DEFAULT_ACTIVE_TRUE,
+    defaultActive: true,
   },
 ];
 
@@ -54,6 +64,9 @@ export default Vue.extend({
           break;
         case EDevtoolsExample.NOT_SAVE:
           console.log(EDevtoolsExample.NOT_SAVE, payload.value);
+          break;
+        case EDevtoolsExample.DEFAULT_ACTIVE_TRUE:
+          console.log(EDevtoolsExample.DEFAULT_ACTIVE_TRUE, payload.value);
           break;
         default:
           break;

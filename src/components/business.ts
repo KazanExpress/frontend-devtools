@@ -1,3 +1,5 @@
+import { TDevtoolsItem } from "./types";
+
 export const DEFAULT_LOCAL_KEY = "ke-devtools";
 
 export const getLocalFlags = (localKey: string): string[] =>
@@ -14,11 +16,22 @@ export const processFlag = (flag: string, localKey: string): boolean => {
     result = true;
   }
 
-  if (localFlags.length === 0) {
-    localStorage.removeItem(localKey);
-  } else {
-    localStorage.setItem(localKey, JSON.stringify(localFlags));
-  }
+  localStorage.setItem(localKey, JSON.stringify(localFlags));
 
   return result;
+};
+
+export const getInitialFlags = (
+  items: TDevtoolsItem[],
+  localKey: string
+): string[] => {
+  if (localStorage.getItem(localKey) !== null) return getLocalFlags(localKey);
+
+  const defaultFlags = items
+    .filter((flag) => flag.defaultActive === true)
+    .map((flag) => flag.key);
+
+  defaultFlags.forEach((flag) => processFlag(flag, localKey));
+
+  return defaultFlags;
 };

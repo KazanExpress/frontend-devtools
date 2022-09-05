@@ -52,7 +52,8 @@ import KeDevtools from '@kazanexpress/frontend-devtools';
 ```ts
 export type TDevtoolsItem<T = string> = {
   key: T;
-  saveLocal?: boolean;
+  saveLocal?: boolean; // default true
+  defaultActive?: boolean; // default false
 };
 
 export type TChangePayload<T = string> = {
