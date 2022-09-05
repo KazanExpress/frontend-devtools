@@ -2,6 +2,7 @@ import Vue from "vue";
 
 export type TDevtoolsItem<T = string> = {
   key: T;
+  defaultActive?: boolean;
   saveLocal?: boolean;
 };
 
