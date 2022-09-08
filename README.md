@@ -17,6 +17,7 @@ import KeDevtools from '@kazanexpress/frontend-devtools';
 <KeDevtools
   :items="devtoolsItems"
   local-storage-key="ke-devtools-example"
+  @init="onInit"
   @change="onChange"
 >
   <template #item-example-save="{ active }">
@@ -37,7 +38,8 @@ import KeDevtools from '@kazanexpress/frontend-devtools';
 ### Events
 | name | payload | description |
 |--|--|--|
-|change|[TChangePayload](#types)|Вызывается при каждом клике на элемент панели
+|change|[TChangePayload](#types)|Вызывается при каждом клике на элемент панели|
+|init|string[]|Вызывается при mounted компонента, передавая все активные флаги|
 
 ### Slots
 

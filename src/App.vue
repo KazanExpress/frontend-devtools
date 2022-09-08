@@ -3,6 +3,7 @@
     <KeDevtools
       :items="devtoolsItems"
       local-storage-key="ke-devtools-example"
+      @init="onInit"
       @change="onChange"
     >
       <template #item-example-save="{ active }">
@@ -17,7 +18,12 @@
         </span>
       </template>
     </KeDevtools>
-    <div class="content">example content</div>
+    <div class="content">
+      example content
+      <div class="content" v-if="isVisibleSaveContent">
+        content if save flag true
+      </div>
+    </div>
   </div>
 </template>
 
@@ -54,12 +60,17 @@ export default Vue.extend({
   data() {
     return {
       devtoolsItems,
+      isVisibleSaveContent: false,
     };
   },
   methods: {
+    onInit(payload: EDevtoolsExample[]) {
+      this.isVisibleSaveContent = payload.includes(EDevtoolsExample.SAVE);
+    },
     onChange(payload: TChangePayload<EDevtoolsExample>) {
       switch (payload.key) {
         case EDevtoolsExample.SAVE:
+          this.isVisibleSaveContent = payload.value;
           console.log(EDevtoolsExample.SAVE, payload.value);
           break;
         case EDevtoolsExample.NOT_SAVE:

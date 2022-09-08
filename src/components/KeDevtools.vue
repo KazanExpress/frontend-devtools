@@ -14,7 +14,10 @@
           class="ke-devtools-panel-button"
           @click="onClickItem(item)"
         >
-          <slot :name="`item-${item.key}`" :active="flags.includes(item.key)" />
+          <slot
+            :name="`item-${item.key}`"
+            :active="localFlags.includes(item.key)"
+          />
         </button>
       </div>
     </div>
@@ -25,7 +28,7 @@
 <script lang="ts">
 import Vue, { PropType } from "vue";
 import DevtoolsLogo from "@/assets/devtools.svg";
-import { processFlag, DEFAULT_LOCAL_KEY, getInitialFlags } from "./business";
+import { DEFAULT_LOCAL_KEY, getInitialFlags, setLocalFlags } from "./business";
 import { TChangePayload, TDevtoolsItem } from "./types";
 
 export default Vue.extend({
@@ -46,32 +49,37 @@ export default Vue.extend({
   data() {
     return {
       isShowDevtools: false,
-      flags: getInitialFlags(this.items, this.localStorageKey),
+      localFlags: getInitialFlags(this.items, this.localStorageKey),
     };
   },
+  mounted() {
+    this.init();
+  },
   methods: {
+    init() {
+      this.$emit("init", this.localFlags);
+    },
     toggleShowDevtools() {
       this.isShowDevtools = !this.isShowDevtools;
     },
     onClickItem(item: TDevtoolsItem) {
-      let value = true;
+      const payload: TChangePayload = {
+        key: item.key,
+        value: !this.localFlags.includes(item.key),
+      };
+      this.$emit("change", payload);
+      this.saveState(item);
+    },
+    saveState(item: TDevtoolsItem) {
+      if (item.saveLocal === false) return;
 
-      if (item.saveLocal !== false) {
-        value = processFlag(item.key, this.localStorageKey);
-
-        if (value) {
-          this.flags.push(item.key);
-        } else {
-          this.flags.splice(this.flags.indexOf(item.key), 1);
-        }
+      if (this.localFlags.includes(item.key)) {
+        this.localFlags.splice(this.localFlags.indexOf(item.key), 1);
+      } else {
+        this.localFlags.push(item.key);
       }
 
-      const changePayload: TChangePayload = {
-        key: item.key,
-        value,
-      };
-
-      this.$emit("change", changePayload);
+      setLocalFlags(this.localFlags, this.localStorageKey);
     },
   },
 });
