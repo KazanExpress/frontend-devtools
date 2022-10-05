@@ -28,7 +28,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import { defineComponent } from "vue";
 import KeDevtools from "./components/KeDevtools.vue";
 import { TChangePayload, TDevtoolsItem } from "./components/types";
 
@@ -52,7 +52,7 @@ const devtoolsItems: TDevtoolsItem<EDevtoolsExample>[] = [
   },
 ];
 
-export default Vue.extend({
+export default defineComponent({
   name: "App",
   components: {
     KeDevtools,

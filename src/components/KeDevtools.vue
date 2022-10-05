@@ -1,12 +1,24 @@
 <template>
   <div class="ke-devtools">
-    <slot name="before" />
     <div class="ke-devtools-panel" :class="{ active: isShowDevtools }">
-      <button class="ke-devtools-panel-activator" @click="toggleShowDevtools">
-        <slot name="activator">
-          <DevtoolsLogo />
-        </slot>
-      </button>
+      <div class="ke-devtools-panel-activator-wrapper">
+        <button
+          class="ke-devtools-panel-activator-button"
+          @click="toggleShowDevtools"
+        >
+          <svg viewBox="0 0 24 24" width="24" height="24">
+            <path
+              fill="#fff"
+              d="M9.61,6.62a6.09,6.09,0,0,1,4.63.07A7.18,7.18,0,0,1,16,7.9a5,5,0,0,1,1.45,2.26,4.92,4.92,0,0,1-.37,3.47,33.69,33.69,0,0,0,3.2,2.88c.63.51,1.25,1,1.87,1.55a10.47,10.47,0,0,1,1,.89,2.79,2.79,0,0,1,.66,2.14,3,3,0,0,1-1.9,2.47,2.6,2.6,0,0,1-1.56.07,4.09,4.09,0,0,1-1.95-1.24c-1.6-1.77-3.17-3.57-4.73-5.37a5.59,5.59,0,0,1-4.56-.35,5.45,5.45,0,0,1-2.6-3.08,6.29,6.29,0,0,1,.17-4c1.26,1.32,2.54,2.63,3.81,3.94.3-.26.56-.56.85-.85.6-.61,1.19-1.22,1.8-1.83.12-.13.26-.25.37-.39l-3.3-3.24Z"
+            />
+            <path
+              fill="#fff"
+              fill-opacity="0.3"
+              d="M9.82,0h4.37c0,.87,0,1.73,0,2.6L17.1,3.79l1.76-1.7A.33.33,0,0,1,19,2c1,1,2,2.05,3,3.06-.59.62-1.19,1.23-1.77,1.86.4,1,.79,1.92,1.19,2.89H24v4.37H21.37L20.66,16h0L19,14.6A5.66,5.66,0,0,0,19.55,12a9.21,9.21,0,0,0-.41-2.38,6.45,6.45,0,0,0-1-2.06,8.39,8.39,0,0,0-1.76-1.71A7.09,7.09,0,0,0,15,5a6.69,6.69,0,0,0-2.79-.56A9.11,9.11,0,0,0,9.23,5a7.58,7.58,0,0,0-4.61,5.51,7.66,7.66,0,0,0,.58,4.67,7.66,7.66,0,0,0,1.27,2,7.14,7.14,0,0,0,3.76,2.19,5.67,5.67,0,0,0,1.24.12A9.58,9.58,0,0,0,14.42,19c.5.57,1,1.16,1.49,1.74l-1.7.66V24H9.8c0-.86,0-1.72,0-2.58-1-.4-1.95-.8-2.92-1.22-.61.59-1.21,1.2-1.83,1.79L2,18.92c.61-.62,1.24-1.23,1.84-1.85C3.4,16.12,3,15.16,2.6,14.2H0c0-1.14,0-2.29,0-3.43,0-.33,0-.65,0-1H2.58l1.2-2.87C3.18,6.31,2.57,5.71,2,5.11,3,4.08,4,3,5,2a2.11,2.11,0,0,1,.27.25L6.89,3.74c1-.4,2-.77,2.93-1.15Z"
+            />
+          </svg>
+        </button>
+      </div>
       <div class="ke-devtools-panel-wrapper">
         <button
           v-for="item in items"
@@ -21,21 +33,16 @@
         </button>
       </div>
     </div>
-    <slot name="after" />
   </div>
 </template>
 
 <script lang="ts">
-import Vue, { PropType } from "vue";
-import DevtoolsLogo from "@/assets/devtools.svg";
+import { PropType, defineComponent } from "vue";
 import { DEFAULT_LOCAL_KEY, getInitialFlags, setLocalFlags } from "./business";
 import { TChangePayload, TDevtoolsItem } from "./types";
 
-export default Vue.extend({
+export default defineComponent({
   name: "ke-devtools",
-  components: {
-    DevtoolsLogo,
-  },
   props: {
     items: {
       type: Array as PropType<TDevtoolsItem[]>,
@@ -72,20 +79,18 @@ export default Vue.extend({
     },
     saveState(item: TDevtoolsItem) {
       if (item.saveLocal === false) return;
-
       if (this.localFlags.includes(item.key)) {
         this.localFlags.splice(this.localFlags.indexOf(item.key), 1);
       } else {
         this.localFlags.push(item.key);
       }
-
       setLocalFlags(this.localFlags, this.localStorageKey);
     },
   },
 });
 </script>
 
-<style scoped>
+<style>
 .ke-devtools {
   position: absolute;
   width: 100%;
@@ -97,6 +102,7 @@ export default Vue.extend({
 }
 
 .ke-devtools-panel {
+  position: relative;
   transform: translateY(-100%);
   transition: 0.15s transform;
 }
@@ -126,11 +132,17 @@ export default Vue.extend({
   background-color: #494b50;
 }
 
-.ke-devtools-panel-activator {
+.ke-devtools-panel-activator-wrapper {
   position: absolute;
   right: 0;
-  bottom: 0;
+  top: 100%;
+  width: 50px;
+  height: 50px;
   z-index: -1;
+  overflow: hidden;
+}
+
+.ke-devtools-panel-activator-button {
   border-radius: 50%;
   background-color: #2e3138;
   line-height: 1;
@@ -139,11 +151,11 @@ export default Vue.extend({
   outline: none;
   border: none;
   padding: 35px;
-  transform: translate(32%, 42%);
+  transform: translate(0%, -50%);
 }
 
-.ke-devtools-panel-activator svg {
-  transform: translate(-4px, 26px);
+.ke-devtools-panel-activator-button svg {
+  transform: translate(-18px, 20px);
 }
 
 .ke-devtools-panel-activator:hover {
