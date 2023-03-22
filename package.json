@@ -1,12 +1,13 @@
 {
   "name": "@kazanexpress/frontend-devtools",
   "main": "./dist/KeDevtools.common.js",
+  "typings": "./dist/components/index.d.ts",
   "version": "2.0.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-bundle": "vue-cli-service build --target lib --name KeDevtools ./src/components/index.ts && tsc --emitDeclarationOnly -p tsconfig.json",
+    "build-bundle": "vue-cli-service build --target lib --name KeDevtools ./src/components/index.ts && vue-tsc --declaration --emitDeclarationOnly",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
   },
@@ -33,9 +34,7 @@
     "prettier": "^2.2.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2",
-    "typescript": "~4.1.5"
-  },
-  "files": [
-    "dist/*"
-  ]
+    "typescript": "~4.1.5",
+    "vue-tsc": "^1.2.0"
+  }
 }
