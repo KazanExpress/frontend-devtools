@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "outDir": "dist",
+    "declaration": true,
     "target": "esnext",
     "module": "esnext",
     "strict": true,
@@ -35,6 +37,7 @@
     "tests/**/*.tsx"
   ],
   "exclude": [
+    "**/tests",
     "node_modules"
   ]
 }
