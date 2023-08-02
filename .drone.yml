@@ -1,0 +1,74 @@
+kind: pipeline
+type: docker
+name: npm-publish
+
+trigger:
+  event:
+    - tag
+
+volumes:
+  - name: docker
+    host:
+      path: /var/run/docker.sock
+  - name: npm-cache
+    host:
+      path: /root/.npm
+  - name: cache-build
+    host:
+      path: /drone/src/build
+
+npm-env: &npm-env
+  image: node:18.16.0
+  volumes:
+    - name: npm-cache
+      path: /root/.npm
+    - name: cache-build
+      path: /drone/src/build
+
+# Добавить из vault креды на nexus из http://vault.um.internal:8200/ui/vault/secrets/infra/show/devops/nexus 
+
+steps:
+
+  - name: install
+    <<: *npm-env
+    environment:
+      NPM_USER_KE:
+        from_secret: nexus_npm_ke_reader_username
+      NPM_PASS_KE:
+        from_secret: nexus_npm_ke_reader_password
+      NPM_NEXUS_ENDPOINT_KE:
+        from_secret: nexus_npm_ke_reader_endpoint
+      NPM_EMAIL_KE:
+        from_secret: nexus_npm_ke_reader_email
+    commands:
+      - npx npm-cli-login -u $NPM_USER_KE -p $NPM_PASS_KE -e $NPM_EMAIL_KE -r $NPM_NEXUS_ENDPOINT_KE
+      - npm install
+
+  - name: build
+    <<: *npm-env
+    commands:
+      - npm ci
+      - npm run build
+
+  - name: publish
+    <<: *npm-env
+    environment:
+      NPM_USER:
+        from_secret: nexus_npm_ke_writer_username
+      NPM_PASS:
+        from_secret: nexus_npm_ke_writer_password
+      NPM_EMAIL:
+        from_secret: nexus_npm_ke_writer_email
+      NPM_NEXUS_ENDPOINT:
+        from_secret: nexus_npm_um_writer_endpoint
+    commands:
+      - npx npm-cli-login -u $NPM_USER -p $NPM_PASS -e $NPM_EMAIL -r $NPM_NEXUS_ENDPOINT
+      - echo "$DRONE_TAG"
+      - |
+        if echo "$DRONE_TAG" | grep -vq "develop"; then
+          npm publish --registry $NPM_NEXUS_ENDPOINT/
+        else
+          npm publish --registry $NPM_NEXUS_ENDPOINT/ --tag beta
+    when:
+      event:
+        - tag
