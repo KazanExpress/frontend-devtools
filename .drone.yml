@@ -69,6 +69,7 @@ steps:
           npm publish --registry $NPM_NEXUS_ENDPOINT/
         else
           npm publish --registry $NPM_NEXUS_ENDPOINT/ --tag beta
+        fi
     when:
       event:
         - tag
