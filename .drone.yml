@@ -18,7 +18,7 @@ volumes:
       path: /drone/src/build
 
 npm-env: &npm-env
-  image: node:18.16.0
+  image: node:16.13.2
   volumes:
     - name: npm-cache
       path: /root/.npm
