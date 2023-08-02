@@ -18,7 +18,7 @@ volumes:
       path: /drone/src/build
 
 npm-env: &npm-env
-  image: node:18.16.0
+  image: node:16.13.2
   volumes:
     - name: npm-cache
       path: /root/.npm
@@ -66,9 +66,10 @@ steps:
       - echo "$DRONE_TAG"
       - |
         if echo "$DRONE_TAG" | grep -vq "develop"; then
-          npm publish --registry $NPM_NEXUS_ENDPOINT/
+          npm publish --@market-tech:registry=$NPM_NEXUS_ENDPOINT/
         else
-          npm publish --registry $NPM_NEXUS_ENDPOINT/ --tag beta
+          npm publish --@market-tech:registry=$NPM_NEXUS_ENDPOINT/ --tag beta
+        fi
     when:
       event:
         - tag
