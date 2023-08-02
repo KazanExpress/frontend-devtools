@@ -60,7 +60,7 @@ steps:
       NPM_EMAIL:
         from_secret: nexus_npm_ke_writer_email
       NPM_NEXUS_ENDPOINT:
-        from_secret: nexus_npm_um_writer_endpoint
+        from_secret: nexus_npm_ke_writer_endpoint
     commands:
       - npx npm-cli-login -u $NPM_USER -p $NPM_PASS -e $NPM_EMAIL -r $NPM_NEXUS_ENDPOINT
       - echo "$DRONE_TAG"
