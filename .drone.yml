@@ -66,9 +66,9 @@ steps:
       - echo "$DRONE_TAG"
       - |
         if echo "$DRONE_TAG" | grep -vq "develop"; then
-          npm publish --registry $NPM_NEXUS_ENDPOINT/
+          npm publish --@market-tech:registry=$NPM_NEXUS_ENDPOINT/
         else
-          npm publish --registry $NPM_NEXUS_ENDPOINT/ --tag beta
+          npm publish --@market-tech:registry=$NPM_NEXUS_ENDPOINT/ --tag beta
         fi
     when:
       event:
