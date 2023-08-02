@@ -2,7 +2,7 @@
   "name": "@market-tech/frontend-devtools",
   "main": "./dist/KeDevtools.common.js",
   "types": "./dist/types.ts",
-  "version": "1.2.1-develop.4",
+  "version": "1.2.1-develop.5",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
