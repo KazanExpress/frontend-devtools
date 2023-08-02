@@ -4,6 +4,7 @@
 ## Использование
 
 1. Установить пакет
+
 ```
 npm i -D @kazanexpress/frontend-devtools@github:KazanExpress/frontend-devtools
 ```
