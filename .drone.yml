@@ -48,7 +48,7 @@ steps:
     <<: *npm-env
     commands:
       - npm ci
-      - npm run build
+      - npm run build-bundle
 
   - name: publish
     <<: *npm-env
