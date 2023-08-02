@@ -3,9 +3,15 @@
 
 ## Использование
 
-1. Установить пакет
+1. Войти в nexus
+
+[Confluence](https://kazanexpress.atlassian.net/wiki/spaces/frontend/pages/411369498)
+
+нужно выполнить `npx npm-cli-login` как в документации, чтобы потом установить этот пакет
+
+2. Установить пакет
 ```
-npm i -D @kazanexpress/frontend-devtools@github:KazanExpress/frontend-devtools
+npm i -D @market-tech/frontend-devtools
 ```
 2. Подключить компонент и стили
 ```
@@ -27,7 +33,7 @@ import KeDevtools from '@kazanexpress/frontend-devtools';
   </template>
 </KeDevtools>
 ```
-Полный пример использования в [./src/App.vue](https://github.com/KazanExpress/frontend-devtools/blob/master/src/App.vue)
+Полный пример использования в [./src/App.vue](https://github.com/KazanExpress/frontend-devtools/blob/release/1.x.x/src/App.vue)
 
 ### Props
 | | types | required | default |
