@@ -1,21 +1,27 @@
-# Frontend Devtools
+# Frontend Devtools for VUE3
 
 ## Использование
 
-1. Установить пакет
+1. Войти в nexus
+
+[Confluence](https://kazanexpress.atlassian.net/wiki/spaces/frontend/pages/411369498)
+
+нужно выполнить `npx npm-cli-login` как в документации, чтобы потом установить этот пакет
+
+2. Установить пакет
 
 ```
-npm i -D @kazanexpress/frontend-devtools@github:KazanExpress/frontend-devtools#vue3
+npm i -D @market-tech/frontend-devtools
 ```
 
-2. Подключить компонент и стили
+3. Подключить компонент и стили
 
 ```
-import '@kazanexpress/frontend-devtools/dist/KeDevtools.css';
-import KeDevtools from '@kazanexpress/frontend-devtools';
+import '@market-tech/frontend-devtools/dist/KeDevtools.css';
+import KeDevtools from '@market-tech/frontend-devtools';
 ```
 
-3. Использовать
+4. Использовать
 
 ```html
 <KeDevtools
@@ -30,7 +36,7 @@ import KeDevtools from '@kazanexpress/frontend-devtools';
 </KeDevtools>
 ```
 
-Полный пример использования в [./src/App.vue](https://github.com/KazanExpress/frontend-devtools/blob/master/src/App.vue)
+Полный пример использования в [./src/App.vue](https://github.com/KazanExpress/frontend-devtools/blob/release/2.x.x/src/App.vue)
 
 ### Props
 
