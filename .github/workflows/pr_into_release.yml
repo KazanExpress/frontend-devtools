@@ -1,0 +1,33 @@
+name: Create release version
+on:
+    pull_request:
+      types: [closed]
+      branches:
+        - 'release/**'
+
+jobs:
+  create_release_patch_tag:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.head.ref, 'develop/') &&
+      startsWith(github.event.pull_request.base.ref, 'release/')
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Configure Git user
+        run: |
+          git config user.name "${{ github.event.pull_request.user.login }}"
+          git config user.email "${{ github.event.pull_request.user.email }}"
+      - name: create patch tag
+        run: npm version patch
+      - name: push tag
+        run: git push --follow-tags
+      - name: checkout
+        run: git pull && git checkout -f ${{github.event.pull_request.head.ref}} && git branch && git status
+      - name: merge force
+        run: |
+          git merge --allow-unrelated-histories -s recursive -X theirs ${{github.event.pull_request.base.ref}}
+          git status
+      - name: push new version to develop
+        run: git push

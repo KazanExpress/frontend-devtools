@@ -1,0 +1,25 @@
+name: Create release-candidate
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - 'develop/**'
+
+jobs:
+  create_pre_patch_tag:
+    runs-on: ubuntu-latest
+    if: |
+      github.event.pull_request.merged == true &&
+      startsWith(github.event.pull_request.base.ref, 'develop/')
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+      - name: Configure Git user
+        run: |
+          git config user.name "${{ github.event.pull_request.user.login }}"
+          git config user.email "${{ github.event.pull_request.user.email }}"
+      - name: create pre_release tag
+        if: |
+        run: npm version prerelease --preid=develop
+      - name: push tag
+        run: git push --follow-tags
